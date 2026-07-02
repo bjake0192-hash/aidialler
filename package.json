@@ -5,12 +5,13 @@
   "type": "module",
   "scripts": {
     "client:dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build && tsc -p api/tsconfig.json",
+    "start": "node dist-api/server.js",
     "lint": "eslint .",
     "preview": "vite preview",
     "check": "tsc --noEmit",
-    "server:dev": "nodemon",
-    "dev": "concurrently \"npm run client:dev\" \"npm run server:dev\""
+    "server:dev": "tsx watch api/server.ts",
+    "dev": "npm run server:dev"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.45.4",
