@@ -5,7 +5,7 @@ import { supabase } from './lib/supabase.js';
 
 dotenv.config();
 
-// Helper functions for audio conversion
+// Helper functions for audio conversion and resampling
 function mulawToPcm(mulaw: Buffer): Buffer {
   const pcm = Buffer.alloc(mulaw.length * 2);
   for (let i = 0; i < mulaw.length; i++) {
@@ -39,6 +39,28 @@ function pcmToMulaw(pcm: Buffer): Buffer {
     mulaw[i] = ~(sign | (exponent << 4) | mantissa);
   }
   return mulaw;
+}
+
+// Resample PCM16 from 8kHz to 24kHz (for OpenAI)
+function resample8to24(pcm8k: Buffer): Buffer {
+  const pcm24k = Buffer.alloc(pcm8k.length * 3);
+  for (let i = 0; i < pcm8k.length / 2; i++) {
+    const sample = pcm8k.readInt16LE(i * 2);
+    pcm24k.writeInt16LE(sample, i * 6);
+    pcm24k.writeInt16LE(sample, i * 6 + 2);
+    pcm24k.writeInt16LE(sample, i * 6 + 4);
+  }
+  return pcm24k;
+}
+
+// Resample PCM16 from 24kHz to 8kHz (for Twilio)
+function resample24to8(pcm24k: Buffer): Buffer {
+  const pcm8k = Buffer.alloc(Math.floor(pcm24k.length / 3));
+  for (let i = 0; i < pcm8k.length / 2; i++) {
+    const sample = pcm24k.readInt16LE(i * 6);
+    pcm8k.writeInt16LE(sample, i * 2);
+  }
+  return pcm8k;
 }
 
 const { OPENAI_API_KEY, DOMAIN } = process.env;
@@ -240,9 +262,10 @@ export function setupMediaStream(server: Server) {
           reportDebug('ai-audio-delta-sent', { length: response.delta.length }, 'H3');
           // #endregion
           
-          // Convert PCM16 from OpenAI back to Mu-law for Twilio
-          const pcmBuffer = Buffer.from(response.delta, 'base64');
-          const mulawBuffer = pcmToMulaw(pcmBuffer);
+          // Convert PCM16 (24kHz) from OpenAI back to Mu-law (8kHz) for Twilio
+          const pcm24kBuffer = Buffer.from(response.delta, 'base64');
+          const pcm8kBuffer = resample24to8(pcm24kBuffer);
+          const mulawBuffer = pcmToMulaw(pcm8kBuffer);
           
           const audioDelta = {
             event: 'media',
@@ -306,13 +329,14 @@ export function setupMediaStream(server: Server) {
               // reportDebug('user-audio-received', { length: data.media.payload.length });
               // #endregion
               
-              // Convert Mu-law from Twilio to PCM16 for OpenAI
+              // Convert Mu-law (8kHz) from Twilio to PCM16 (24kHz) for OpenAI
               const mulawBuffer = Buffer.from(data.media.payload, 'base64');
-              const pcmBuffer = mulawToPcm(mulawBuffer);
+              const pcm8kBuffer = mulawToPcm(mulawBuffer);
+              const pcm24kBuffer = resample8to24(pcm8kBuffer);
               
               const audioAppend = {
                 type: 'input_audio_buffer.append',
-                audio: pcmBuffer.toString('base64')
+                audio: pcm24kBuffer.toString('base64')
               };
               openAiWs.send(JSON.stringify(audioAppend));
             }
