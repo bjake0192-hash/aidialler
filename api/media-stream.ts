@@ -1,6 +1,7 @@
 import { WebSocket, WebSocketServer } from 'ws';
 import { Server } from 'http';
 import dotenv from 'dotenv';
+import { supabase } from './lib/supabase.js';
 
 dotenv.config();
 
@@ -17,12 +18,46 @@ export function setupMediaStream(server: Server) {
     console.log('Twilio Media Stream connection established');
 
     let streamSid: string | null = null;
+    let callSid: string | null = null;
+    let transcript = '';
+
     const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01', {
       headers: {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
         'OpenAI-Beta': 'realtime=v1',
       },
     });
+
+    const updateCallLog = async (finalTranscript: string) => {
+      if (streamSid) {
+        const { error } = await supabase
+          .from('call_logs')
+          .update({ transcript: finalTranscript })
+          .eq('twilio_sid', callSid);
+        
+        if (error) console.error('Error updating call log:', error);
+      }
+    };
+
+    const updateLeadStatus = async (status: string, summary: string) => {
+      if (callSid) {
+        // Get lead_id from call_logs
+        const { data: log } = await supabase
+          .from('call_logs')
+          .select('lead_id')
+          .eq('twilio_sid', callSid)
+          .single();
+        
+        if (log) {
+          const { error } = await supabase
+            .from('leads')
+            .update({ status, qualification_summary: summary })
+            .eq('id', log.lead_id);
+          
+          if (error) console.error('Error updating lead status:', error);
+        }
+      }
+    };
 
     const sendSessionUpdate = () => {
       const sessionUpdate = {
@@ -32,7 +67,7 @@ export function setupMediaStream(server: Server) {
           input_audio_format: 'g711_ulaw',
           output_audio_format: 'g711_ulaw',
           voice: 'alloy',
-          instructions: 'You are an AI sales assistant for OpenLead. Your goal is to qualify prospects for our lead generation services. Be professional, friendly, and concise. Ask about their current lead generation process and if they are looking for more high-quality leads.',
+          instructions: 'You are an AI sales assistant for OpenLead. Your goal is to qualify prospects for our lead generation services. Be professional, friendly, and concise. Ask about their current lead generation process and if they are looking for more high-quality leads. If they seem interested, mark them as qualified. If not, mark them as rejected. At the end of the call, provide a brief summary of the conversation.',
           modalities: ["text", "audio"],
           temperature: 0.8,
         }
@@ -50,6 +85,7 @@ export function setupMediaStream(server: Server) {
       try {
         const response = JSON.parse(data);
 
+        // Handle audio output from AI
         if (response.type === 'response.output_audio.delta' && response.delta && streamSid) {
           const audioDelta = {
             event: 'media',
@@ -59,8 +95,25 @@ export function setupMediaStream(server: Server) {
           connection.send(JSON.stringify(audioDelta));
         }
 
-        if (response.type === 'session.updated') {
-          console.log('Session updated successfully');
+        // Handle text response for transcript
+        if (response.type === 'response.audio_transcript.done') {
+          transcript += `AI: ${response.transcript}\n`;
+          updateCallLog(transcript);
+        }
+
+        if (response.type === 'conversation.item.input_audio_transcription.completed') {
+          transcript += `User: ${response.transcript}\n`;
+          updateCallLog(transcript);
+        }
+
+        // Handle function calls or status updates (simplified for now)
+        if (response.type === 'response.done') {
+          const text = response.response?.output?.[0]?.content?.[0]?.text || '';
+          if (text.toLowerCase().includes('qualified')) {
+            updateLeadStatus('qualified', text);
+          } else if (text.toLowerCase().includes('not interested') || text.toLowerCase().includes('rejected')) {
+            updateLeadStatus('rejected', text);
+          }
         }
 
         if (response.type === 'error') {
@@ -78,7 +131,8 @@ export function setupMediaStream(server: Server) {
         switch (data.event) {
           case 'start':
             streamSid = data.start.streamSid;
-            console.log(`Stream started with SID: ${streamSid}`);
+            callSid = data.start.callSid;
+            console.log(`Stream started with SID: ${streamSid}, Call SID: ${callSid}`);
             break;
           case 'media':
             if (openAiWs.readyState === WebSocket.OPEN) {
@@ -91,6 +145,7 @@ export function setupMediaStream(server: Server) {
             break;
           case 'stop':
             console.log('Stream stopped');
+            updateCallLog(transcript);
             openAiWs.close();
             break;
         }

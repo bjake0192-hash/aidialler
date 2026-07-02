@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { 
   Phone, 
@@ -12,23 +12,38 @@ import {
   History
 } from 'lucide-react';
 
-const stats = [
-  { label: 'Total Calls', value: '1,284', icon: Phone, color: 'text-blue-400' },
-  { label: 'Qualified Leads', value: '432', icon: CheckCircle2, color: 'text-emerald-400' },
-  { label: 'Active Prospects', value: '892', icon: Users, color: 'text-indigo-400' },
-  { label: 'Conversion Rate', value: '33.6%', icon: TrendingUp, color: 'text-cyan-400' },
-];
-
-const mockLeads = [
-  { id: 1, name: 'John Doe', phone: '+1 234 567 890', status: 'Qualified', time: '2m ago' },
-  { id: 2, name: 'Sarah Smith', phone: '+1 987 654 321', status: 'Calling', time: 'Just now' },
-  { id: 3, name: 'Michael Brown', phone: '+1 555 012 345', status: 'Pending', time: '1h ago' },
-  { id: 4, name: 'Emma Wilson', phone: '+1 444 987 654', status: 'Rejected', time: '3h ago' },
-];
+interface Lead {
+  id: string;
+  phone_number: string;
+  status: string;
+  created_at: string;
+}
 
 export default function Home() {
   const [phoneNumber, setPhoneNumber] = useState('');
   const [isCalling, setIsCalling] = useState(false);
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const fetchLeads = async () => {
+    try {
+      const response = await fetch('/api/calls/leads');
+      const data = await response.json();
+      if (data.success) {
+        setLeads(data.leads);
+      }
+    } catch (error) {
+      console.error('Error fetching leads:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchLeads();
+    const interval = setInterval(fetchLeads, 5000); // Poll every 5 seconds
+    return () => clearInterval(interval);
+  }, []);
 
   const handleStartCall = async () => {
     if (!phoneNumber) return;
@@ -40,13 +55,23 @@ export default function Home() {
         body: JSON.stringify({ phoneNumber }),
       });
       const data = await response.json();
-      console.log('Call response:', data);
+      if (data.success) {
+        fetchLeads();
+      }
     } catch (error) {
       console.error('Call error:', error);
     } finally {
       setIsCalling(false);
+      setPhoneNumber('');
     }
   };
+
+  const stats = [
+    { label: 'Total Calls', value: leads.length.toString(), icon: Phone, color: 'text-blue-400' },
+    { label: 'Qualified Leads', value: leads.filter(l => l.status === 'qualified').length.toString(), icon: CheckCircle2, color: 'text-emerald-400' },
+    { label: 'Active Prospects', value: leads.filter(l => l.status === 'calling').length.toString(), icon: Users, color: 'text-indigo-400' },
+    { label: 'Conversion Rate', value: leads.length > 0 ? `${((leads.filter(l => l.status === 'qualified').length / leads.length) * 100).toFixed(1)}%` : '0%', icon: TrendingUp, color: 'text-cyan-400' },
+  ];
 
   return (
     <div className="min-h-screen bg-[#030712] text-slate-50 flex bg-mesh">
@@ -150,28 +175,47 @@ export default function Home() {
               </tr>
             </thead>
             <tbody className="divide-y divide-white/5">
-              {mockLeads.map((lead) => (
-                <tr key={lead.id} className="group hover:bg-white/[0.02] transition-colors">
-                  <td className="px-6 py-4 font-medium">{lead.name}</td>
-                  <td className="px-6 py-4 text-slate-400">{lead.phone}</td>
-                  <td className="px-6 py-4">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      lead.status === 'Qualified' ? 'bg-emerald-400/10 text-emerald-400' :
-                      lead.status === 'Calling' ? 'bg-blue-400/10 text-blue-400 animate-pulse' :
-                      lead.status === 'Rejected' ? 'bg-rose-400/10 text-rose-400' :
-                      'bg-slate-400/10 text-slate-400'
-                    }`}>
-                      {lead.status}
-                    </span>
-                  </td>
-                  <td className="px-6 py-4 text-slate-400 text-sm">{lead.time}</td>
-                  <td className="px-6 py-4 text-right">
-                    <button className="text-slate-400 hover:text-white transition-colors">
-                      View Details
-                    </button>
+              {isLoading ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                      <span>Loading leads...</span>
+                    </div>
                   </td>
                 </tr>
-              ))}
+              ) : leads.length === 0 ? (
+                <tr>
+                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                    No leads found. Start a call to see them here.
+                  </td>
+                </tr>
+              ) : (
+                leads.map((lead) => (
+                  <tr key={lead.id} className="group hover:bg-white/[0.02] transition-colors">
+                    <td className="px-6 py-4 font-medium">Lead #{lead.id.slice(0, 8)}</td>
+                    <td className="px-6 py-4 text-slate-400">{lead.phone_number}</td>
+                    <td className="px-6 py-4">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                        lead.status === 'qualified' ? 'bg-emerald-400/10 text-emerald-400' :
+                        lead.status === 'calling' ? 'bg-blue-400/10 text-blue-400 animate-pulse' :
+                        lead.status === 'rejected' ? 'bg-rose-400/10 text-rose-400' :
+                        'bg-slate-400/10 text-slate-400'
+                      }`}>
+                        {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
+                      </span>
+                    </td>
+                    <td className="px-6 py-4 text-slate-400 text-sm">
+                      {new Date(lead.created_at).toLocaleTimeString()}
+                    </td>
+                    <td className="px-6 py-4 text-right">
+                      <button className="text-slate-400 hover:text-white transition-colors">
+                        View Details
+                      </button>
+                    </td>
+                  </tr>
+                ))
+              )}
             </tbody>
           </table>
         </div>
