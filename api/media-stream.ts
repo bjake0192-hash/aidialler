@@ -5,7 +5,8 @@ import { supabase } from './lib/supabase.js';
 
 dotenv.config();
 
-const { OPENAI_API_KEY } = process.env;
+const { OPENAI_API_KEY, DOMAIN } = process.env;
+const API_KEY = OPENAI_API_KEY?.trim();
 
 // #region debug-point ai-dialler-silence-bug-reporter
 const reportDebug = (event: string, data: any = {}, hypothesisId?: string) => {
@@ -23,10 +24,10 @@ const reportDebug = (event: string, data: any = {}, hypothesisId?: string) => {
 };
 // #endregion
 
-if (!OPENAI_API_KEY) {
+if (!API_KEY) {
   console.error('Missing OPENAI_API_KEY in environment variables');
+  process.exit(1);
 }
-
 const AI_SCRIPT = `
 You are an AI sales assistant for OpenLead. Your goal is to qualify prospects for our lead generation services. 
 Be professional, friendly, and concise. 
@@ -58,11 +59,10 @@ export function setupMediaStream(server: Server) {
     let transcript = '';
     let hasGreetingBeenSent = false;
 
-    console.log(`Initiating OpenAI WebSocket connection with key starting with: ${OPENAI_API_KEY?.slice(0, 10)}...`);
-    const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview-2024-10-01', {
+    console.log(`Initiating OpenAI WebSocket connection with key length: ${API_KEY?.length}`);
+    const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview', {
       headers: {
-        Authorization: `Bearer ${OPENAI_API_KEY}`,
-        'OpenAI-Beta': 'realtime=v1',
+        Authorization: `Bearer ${API_KEY}`,
       },
     });
 

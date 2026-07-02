@@ -1,0 +1,26 @@
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:09:41.980Z", "ts": 1783001382215}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:09:42.212Z", "ts": 1783001382273}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:09:42.215Z", "ts": 1783001382276}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:09:43.528Z", "ts": 1783001383547}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error"}, "timestamp": "2026-07-02T14:09:43.565Z", "ts": 1783001383596}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:09:58.749Z", "ts": 1783001398780}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:11:51.472Z", "ts": 1783001511512}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:11:51.738Z", "ts": 1783001511746}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:11:51.742Z", "ts": 1783001511756}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:11:53.357Z", "ts": 1783001513692}
+{"sessionId": "ai-dialler-silence-bug", "event": "sending-greeting", "data": {}, "hypothesisId": "H4", "timestamp": "2026-07-02T14:11:53.512Z", "ts": 1783001513694}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error"}, "timestamp": "2026-07-02T14:11:53.693Z", "ts": 1783001513783}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:12:05.459Z", "ts": 1783001525553}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:12:20.210Z", "ts": 1783001540223}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:12:20.480Z", "ts": 1783001540486}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:12:20.481Z", "ts": 1783001540487}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:12:21.328Z", "ts": 1783001541332}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error"}, "timestamp": "2026-07-02T14:12:21.334Z", "ts": 1783001541340}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:12:33.220Z", "ts": 1783001553238}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:30:39.346Z", "ts": 1783002639515}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:30:39.587Z", "ts": 1783002639601}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:30:39.590Z", "ts": 1783002639605}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:30:40.822Z", "ts": 1783002641054}
+{"sessionId": "ai-dialler-silence-bug", "event": "sending-greeting", "data": {}, "hypothesisId": "H4", "timestamp": "2026-07-02T14:30:40.896Z", "ts": 1783002641121}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error"}, "timestamp": "2026-07-02T14:30:41.244Z", "ts": 1783002641403}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:30:47.917Z", "ts": 1783002647943}

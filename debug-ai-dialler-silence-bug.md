@@ -22,3 +22,7 @@
 
 ## Timeline
 - **2026-07-02 21:00**: Initialized debug session and hypotheses.
+- **2026-07-02 21:10**: Analyzed logs. Found `invalid_request_error` from OpenAI: `The Realtime Beta API is no longer supported. Please use /v1/realtime for the GA API.`
+- **2026-07-02 21:12**: Updated `media-stream.ts` to use GA endpoint and removed `OpenAI-Beta` header. [H1] was partially true (connection opened but was immediately closed due to error).
+- **2026-07-02 21:15**: Found that `gpt-4o-realtime-preview` was not recognized without the full version string. Updated to `gpt-4o-realtime-preview-2024-10-01`.
+- **2026-07-02 21:32**: Still getting `model_not_found`. Reverting to `gpt-4o-realtime-preview` but keeping the GA endpoint. Checking API key integrity.
