@@ -194,7 +194,7 @@ export function setupMediaStream(server: Server) {
         const response = JSON.parse(data);
         // #region debug-point openai-message
         if (response.type !== 'input_audio_buffer.append') {
-          reportDebug('openai-message-received', { type: response.type });
+          reportDebug('openai-message-received', { type: response.type, error: response.error });
         }
         // #endregion
 
