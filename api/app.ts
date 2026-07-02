@@ -47,6 +47,21 @@ app.use(
 )
 
 /**
+ * Serve static frontend files
+ */
+app.use(express.static(path.join(__dirname, '../dist')))
+
+/**
+ * Handle React routing, return all non-API requests to index.html
+ */
+app.get('*', (req: Request, res: Response, next: NextFunction) => {
+  if (req.path.startsWith('/api/')) {
+    return next()
+  }
+  res.sendFile(path.join(__dirname, '../dist', 'index.html'))
+})
+
+/**
  * error handler middleware
  */
 app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
