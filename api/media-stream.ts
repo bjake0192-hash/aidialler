@@ -97,6 +97,7 @@ const AI_SCRIPT = `
 - Tone: Real person, not a robot. Use natural fillers like "um", "ah", or "I see".
 
 # CORE BEHAVIOR
+- WAIT FOR THE USER TO SPEAK FIRST. When the user says "Hello" or answers the phone, you must reply with the INTRODUCTION.
 - DO NOT repeat yourself. 
 - If the user has answered a question, MOVE ON to the next step.
 - If they say they are busy during the intro: "Totally understand. I'll be super brief—just 30 seconds?"
@@ -228,43 +229,6 @@ export function setupMediaStream(server: Server) {
       openAiWs.send(JSON.stringify(sessionUpdate));
     };
 
-    const sendGreeting = () => {
-      if (hasGreetingBeenSent || connection.readyState !== WebSocket.OPEN) {
-        // #region debug-point greeting-skipped
-        reportDebug('greeting-skipped', { hasGreetingBeenSent, connectionState: connection.readyState });
-        // #endregion
-        return;
-      }
-      
-      if (openAiWs.readyState === WebSocket.OPEN) {
-        // #region debug-point greeting-sent
-        reportDebug('sending-greeting', {}, 'H4');
-        // #endregion
-        console.log('Sending AI greeting to OpenAI');
-        const greeting = {
-        type: 'conversation.item.create',
-        item: {
-          type: 'message',
-          role: 'assistant',
-          content: [
-            {
-              type: 'input_text',
-              text: "Hi, it's Sarah Edwards, I'm calling from OES. I was just reaching out regarding Solar for your Business premises... I was just wondering, is that something you're currently looking into?"
-            }
-          ]
-        }
-      };
-        openAiWs.send(JSON.stringify(greeting));
-        openAiWs.send(JSON.stringify({ type: 'response.create' }));
-        hasGreetingBeenSent = true;
-      } else if (openAiWs.readyState === WebSocket.CONNECTING) {
-        console.log('OpenAI WS connecting, retrying greeting in 500ms...');
-        setTimeout(sendGreeting, 500);
-      } else {
-        console.error('OpenAI WS closed or in error state, cannot send greeting. State:', openAiWs.readyState);
-      }
-    };
-
     openAiWs.on('open', () => {
       // #region debug-point openai-open
       reportDebug('openai-connection-open', {}, 'H1');
@@ -346,8 +310,9 @@ export function setupMediaStream(server: Server) {
             streamSid = data.start.streamSid;
             callSid = data.start.callSid;
             console.log(`Stream started with SID: ${streamSid}, Call SID: ${callSid}`);
-            // Trigger greeting as soon as stream starts
-            setTimeout(sendGreeting, 1000); 
+            // Remove proactive greeting to let VAD trigger naturally when the user speaks.
+            // The AI will now wait for the user to say "Hello" before speaking.
+            console.log('Stream started. Waiting for user to speak...');
             break;
           case 'media':
             if (openAiWs.readyState === WebSocket.OPEN) {
