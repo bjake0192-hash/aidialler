@@ -69,17 +69,25 @@ router.post('/start', async (req: Request, res: Response) => {
   }
 });
 
-// Route to get leads
+// Route to get leads with their most recent call log
 router.get('/leads', async (req: Request, res: Response) => {
   try {
     const { data, error } = await supabase
       .from('leads')
-      .select('*')
+      .select('*, call_logs(*)')
       .order('created_at', { ascending: false });
 
     if (error) throw error;
-    res.status(200).json({ success: true, leads: data });
+    
+    // Process data to flatten call_logs if needed or just send as is
+    const processedLeads = data.map(lead => ({
+      ...lead,
+      transcript: lead.call_logs?.[0]?.transcript || '',
+    }));
+
+    res.status(200).json({ success: true, leads: processedLeads });
   } catch (error: any) {
+    console.error('Fetch Leads Error:', error);
     res.status(500).json({ success: false, error: error.message });
   }
 });

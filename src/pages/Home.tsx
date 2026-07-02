@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Phone, 
   Users, 
@@ -9,7 +9,11 @@ import {
   Settings as SettingsIcon, 
   LayoutDashboard,
   Play,
-  History
+  History,
+  X,
+  FileText,
+  Clock,
+  ExternalLink
 } from 'lucide-react';
 
 interface Lead {
@@ -17,6 +21,8 @@ interface Lead {
   phone_number: string;
   status: string;
   created_at: string;
+  qualification_summary?: string;
+  transcript?: string;
 }
 
 export default function Home() {
@@ -25,10 +31,14 @@ export default function Home() {
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState('Dashboard');
+  const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
 
   const fetchLeads = async () => {
     try {
       const response = await fetch('/api/calls/leads');
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       const data = await response.json();
       if (data.success) {
         setLeads(data.leads);
@@ -179,7 +189,11 @@ export default function Home() {
                           {new Date(lead.created_at).toLocaleTimeString()}
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <button className="text-slate-400 hover:text-white transition-colors">
+                          <button 
+                            onClick={() => setSelectedLead(lead)}
+                            className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 ml-auto"
+                          >
+                            <ExternalLink className="w-3.5 h-3.5" />
                             View Details
                           </button>
                         </td>
@@ -189,6 +203,101 @@ export default function Home() {
                 </tbody>
               </table>
             </div>
+
+            {/* Lead Details Modal */}
+            <AnimatePresence>
+              {selectedLead && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 sm:p-6">
+                  <motion.div
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    onClick={() => setSelectedLead(null)}
+                    className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                  />
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.95, y: 20 }}
+                    animate={{ opacity: 1, scale: 1, y: 0 }}
+                    exit={{ opacity: 0, scale: 0.95, y: 20 }}
+                    className="relative w-full max-w-2xl bg-[#0a0f1d] border border-white/10 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[90vh]"
+                  >
+                    {/* Modal Header */}
+                    <div className="p-6 border-b border-white/5 flex justify-between items-center bg-white/[0.02]">
+                      <div className="flex items-center gap-3">
+                        <div className={`p-2 rounded-lg ${
+                          selectedLead.status === 'qualified' ? 'bg-emerald-400/10 text-emerald-400' :
+                          selectedLead.status === 'calling' ? 'bg-blue-400/10 text-blue-400' :
+                          'bg-slate-400/10 text-slate-400'
+                        }`}>
+                          <Phone className="w-5 h-5" />
+                        </div>
+                        <div>
+                          <h3 className="text-xl font-bold">Lead Details</h3>
+                          <p className="text-sm text-slate-400">{selectedLead.phone_number}</p>
+                        </div>
+                      </div>
+                      <button 
+                        onClick={() => setSelectedLead(null)}
+                        className="p-2 hover:bg-white/5 rounded-lg transition-colors text-slate-400 hover:text-white"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* Modal Body */}
+                    <div className="p-6 overflow-y-auto custom-scrollbar flex flex-col gap-6">
+                      {/* Summary Section */}
+                      <section>
+                        <div className="flex items-center gap-2 mb-3 text-indigo-400">
+                          <CheckCircle2 className="w-4 h-4" />
+                          <h4 className="text-sm font-semibold uppercase tracking-wider">Qualification Summary</h4>
+                        </div>
+                        <div className="bg-white/5 border border-white/5 rounded-xl p-4 text-slate-300 leading-relaxed">
+                          {selectedLead.qualification_summary || 'No summary available yet. The AI is still processing this lead.'}
+                        </div>
+                      </section>
+
+                      {/* Transcript Section */}
+                      <section>
+                        <div className="flex items-center gap-2 mb-3 text-blue-400">
+                          <FileText className="w-4 h-4" />
+                          <h4 className="text-sm font-semibold uppercase tracking-wider">Call Transcript</h4>
+                        </div>
+                        <div className="bg-black/40 border border-white/5 rounded-xl p-4 font-mono text-sm text-slate-400 h-64 overflow-y-auto custom-scrollbar whitespace-pre-wrap leading-relaxed">
+                          {selectedLead.transcript || 'No transcript available for this call.'}
+                        </div>
+                      </section>
+
+                      {/* Meta Info */}
+                      <div className="grid grid-cols-2 gap-4">
+                        <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                          <div className="flex items-center gap-2 text-slate-500 text-xs uppercase tracking-wider mb-1">
+                            <Clock className="w-3 h-3" />
+                            Created At
+                          </div>
+                          <div className="text-sm font-medium">
+                            {new Date(selectedLead.created_at).toLocaleString()}
+                          </div>
+                        </div>
+                        <div className="bg-white/5 rounded-xl p-4 border border-white/5">
+                          <div className="flex items-center gap-2 text-slate-500 text-xs uppercase tracking-wider mb-1">
+                            <TrendingUp className="w-3 h-3" />
+                            Status
+                          </div>
+                          <div className={`text-sm font-bold uppercase ${
+                            selectedLead.status === 'qualified' ? 'text-emerald-400' :
+                            selectedLead.status === 'calling' ? 'text-blue-400' :
+                            'text-slate-400'
+                          }`}>
+                            {selectedLead.status}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </motion.div>
+                </div>
+              )}
+            </AnimatePresence>
           </>
         );
       case 'Leads':
