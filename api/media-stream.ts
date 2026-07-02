@@ -222,9 +222,15 @@ export function setupMediaStream(server: Server) {
           instructions: AI_SCRIPT,
           modalities: ["text", "audio"],
           temperature: 0.7,
+          // Only pass English speech to the AI
           input_audio_transcription: { model: 'whisper-1', language: 'en' }
         }
       };
+      
+      // If the AI speaks Spanish, it's often because the "shimmer" voice was trained on multilingual data.
+      // We will switch to "alloy" or "echo" which tend to be more stable in English.
+      // Let's use "alloy" which is very clear and human-like.
+      sessionUpdate.session.voice = 'alloy';
       console.log('Sending session update to OpenAI with strict English instructions');
       openAiWs.send(JSON.stringify(sessionUpdate));
     };
