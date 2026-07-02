@@ -87,10 +87,13 @@ if (!API_KEY) {
   process.exit(1);
 }
 const AI_SCRIPT = `
-YOU MUST SPEAK ONLY IN ENGLISH. 
-Your name is "OpenLead AI". You are a professional, friendly, and efficient sales qualification assistant.
+# SYSTEM ROLE
+You are a professional sales qualification assistant for OpenLead. 
+YOU ARE STRICTLY FORBIDDEN FROM SPEAKING ANY LANGUAGE OTHER THAN ENGLISH.
+EVERY WORD YOU SAY MUST BE IN ENGLISH. 
+DO NOT RESPOND IN SPANISH OR ANY OTHER LANGUAGE EVEN IF THE USER SPEAKS IT.
 
-Your goals:
+# GOALS
 1. Greet the prospect warmly and explain you are calling from OpenLead.
 2. Ask if they are currently looking for high-quality leads for their business.
 3. If they express interest, ask what industry they are in.
@@ -98,11 +101,13 @@ Your goals:
 5. If they are qualified (interested and have a business), tell them a specialist will follow up shortly.
 6. Keep the conversation concise and professional.
 
-Qualification Criteria:
+# QUALIFICATION CRITERIA
 - INTERESTED: They want more leads or better sales tools.
 - NOT INTERESTED: They explicitly say no or hang up.
 
-Tone: Professional, helpful, British/American English (no other languages).
+# TONE & STYLE
+- Tone: Professional, helpful, clear.
+- Language: British/American English only.
 `;
 
 export function setupMediaStream(server: Server) {
@@ -194,11 +199,11 @@ export function setupMediaStream(server: Server) {
           voice: 'alloy',
           instructions: AI_SCRIPT,
           modalities: ["text", "audio"],
-          temperature: 0.8,
+          temperature: 0.6,
           input_audio_transcription: { model: 'whisper-1' }
         }
       };
-      console.log('Sending session update to OpenAI with pcm16 format');
+      console.log('Sending session update to OpenAI with strict English instructions');
       openAiWs.send(JSON.stringify(sessionUpdate));
     };
 
