@@ -96,10 +96,12 @@ const AI_SCRIPT = `
 - Persona: Professional, friendly, British growth consultant. 
 - ACCENT: YOU MUST SPEAK WITH A CLEAR BRITISH ACCENT.
 - Tone: Real person, not a robot. Use natural fillers like "um", "ah", or "I see".
+- LANGUAGE: ENGLISH ONLY. Never use Arabic, Spanish, or any other language.
 
 # CORE BEHAVIOR
 - WAIT FOR THE USER TO SPEAK FIRST. 
 - When the user says "Hello" or answers the phone, YOU MUST IMMEDIATELY REPLY EXACTLY WITH THE INTRODUCTION FROM STEP 1. DO NOT SAY ANYTHING ELSE FIRST.
+- IF YOU HEAR SILENCE OR BACKGROUND NOISE, DO NOT RESPOND IN ARABIC. Assume the user is thinking.
 - DO NOT repeat yourself. 
 - If the user has answered a question, MOVE ON to the next step.
 - If they say they are busy during the intro: "Totally understand. I'll be super brief—just 30 seconds?"
@@ -217,15 +219,24 @@ export function setupMediaStream(server: Server) {
       const sessionUpdate = {
         type: 'session.update',
         session: {
-          turn_detection: { type: 'server_vad' },
+          turn_detection: { 
+            type: 'server_vad',
+            threshold: 0.5,
+            prefix_padding_ms: 300,
+            silence_duration_ms: 500
+          },
           input_audio_format: 'pcm16',
           output_audio_format: 'pcm16',
           voice: 'shimmer',
           instructions: AI_SCRIPT,
           modalities: ["text", "audio"],
-          temperature: 0.7,
-          // Only pass English speech to the AI
-          input_audio_transcription: { model: 'whisper-1', language: 'en' }
+          temperature: 0.6,
+          // Whisper-1 often hallucinates Arabic on background noise.
+          // By strictly setting language and prompt, we force it to stay in English context.
+          input_audio_transcription: { 
+            model: 'whisper-1', 
+            language: 'en'
+          }
         }
       };
       
