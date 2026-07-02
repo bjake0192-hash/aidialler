@@ -41,33 +41,32 @@ function pcmToMulaw(pcm: Buffer): Buffer {
   return mulaw;
 }
 
-// Resample PCM16 from 8kHz to 24kHz (for OpenAI)
-function resample8to24(pcm8k: Buffer): Buffer {
-  const pcm24k = Buffer.alloc(pcm8k.length * 3);
+// Resample PCM16 from 8kHz to 16kHz (for ElevenLabs)
+function resample8to16(pcm8k: Buffer): Buffer {
+  const pcm16k = Buffer.alloc(pcm8k.length * 2);
   for (let i = 0; i < pcm8k.length / 2; i++) {
     const sample = pcm8k.readInt16LE(i * 2);
-    // Basic linear interpolation to reduce noise that might trigger wrong language detection
+    // Linear interpolation
     const nextSample = (i < (pcm8k.length / 2) - 1) ? pcm8k.readInt16LE(i * 2 + 2) : sample;
     
-    pcm24k.writeInt16LE(sample, i * 6);
-    pcm24k.writeInt16LE(Math.round(sample + (nextSample - sample) * (1/3)), i * 6 + 2);
-    pcm24k.writeInt16LE(Math.round(sample + (nextSample - sample) * (2/3)), i * 6 + 4);
+    pcm16k.writeInt16LE(sample, i * 4);
+    pcm16k.writeInt16LE(Math.round(sample + (nextSample - sample) * 0.5), i * 4 + 2);
   }
-  return pcm24k;
+  return pcm16k;
 }
 
-// Resample PCM16 from 24kHz to 8kHz (for Twilio)
-function resample24to8(pcm24k: Buffer): Buffer {
-  const pcm8k = Buffer.alloc(Math.floor(pcm24k.length / 3));
+// Resample PCM16 from 16kHz to 8kHz (for Twilio)
+function resample16to8(pcm16k: Buffer): Buffer {
+  const pcm8k = Buffer.alloc(Math.floor(pcm16k.length / 2));
   for (let i = 0; i < pcm8k.length / 2; i++) {
-    const sample = pcm24k.readInt16LE(i * 6);
+    const sample = pcm16k.readInt16LE(i * 4);
     pcm8k.writeInt16LE(sample, i * 2);
   }
   return pcm8k;
 }
 
-const { OPENAI_API_KEY, DOMAIN } = process.env;
-const API_KEY = OPENAI_API_KEY?.trim();
+const { ELEVENLABS_AGENT_ID, ELEVENLABS_API_KEY, DOMAIN } = process.env;
+const API_KEY = ELEVENLABS_API_KEY?.trim();
 
 // #region debug-point ai-dialler-silence-bug-reporter
 const reportDebug = (event: string, data: any = {}, hypothesisId?: string) => {
@@ -150,17 +149,8 @@ export function setupMediaStream(server: Server) {
     let transcript = '';
     let hasGreetingBeenSent = false;
 
-    console.log(`Initiating OpenAI WebSocket connection with key starting with: ${API_KEY?.slice(0, 12)}...`);
-    const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-realtime', {
-      headers: {
-        Authorization: `Bearer ${API_KEY}`,
-      },
-    });
-
-    openAiWs.on('unexpected-response', (req, res) => {
-      console.error('OpenAI Unexpected Response:', res.statusCode, res.statusMessage);
-      res.on('data', (chunk) => console.error('Response body:', chunk.toString()));
-    });
+    console.log(`Initiating ElevenLabs WebSocket connection with Agent ID: ${ELEVENLABS_AGENT_ID}`);
+    let elevenLabsWs: WebSocket | null = null;
 
     const updateCallLog = async (finalTranscript: string) => {
       if (callSid) {
@@ -215,149 +205,116 @@ export function setupMediaStream(server: Server) {
       }
     };
 
-    const sendSessionUpdate = () => {
-      const sessionUpdate = {
-        type: 'session.update',
-        session: {
-          turn_detection: { 
-            type: 'server_vad',
-            threshold: 0.5,
-            prefix_padding_ms: 300,
-            silence_duration_ms: 500
-          },
-          input_audio_format: 'pcm16',
-          output_audio_format: 'pcm16',
-          voice: 'shimmer',
-          instructions: AI_SCRIPT,
-          modalities: ["text", "audio"],
-          temperature: 0.6,
-          // Whisper-1 often hallucinates Arabic on background noise.
-          // By strictly setting language and prompt, we force it to stay in English context.
-          input_audio_transcription: { 
-            model: 'whisper-1', 
-            language: 'en'
-          }
+    const setupElevenLabs = async () => {
+      try {
+        const response = await fetch(
+          `https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${ELEVENLABS_AGENT_ID}`,
+          { headers: { 'xi-api-key': API_KEY || '' } }
+        );
+        
+        if (!response.ok) {
+          console.error('Failed to get ElevenLabs signed URL:', await response.text());
+          return;
         }
-      };
-      
-      // 'alloy' is American. Let's try 'sage' or 'coral' which are newer and sometimes exhibit different accents.
-      // Alternatively, 'shimmer' was American female. 'nova' is American female.
-      // Unfortunately, the native OpenAI Realtime API voices currently lean heavily American.
-      // However, we can instruct the model to adopt a British accent.
-      sessionUpdate.session.voice = 'shimmer'; // Shimmer is the most natural female voice. We will enforce the accent via text instructions.
-      console.log('Sending session update to OpenAI with strict English instructions');
-      openAiWs.send(JSON.stringify(sessionUpdate));
+        
+        const data = await response.json();
+        elevenLabsWs = new WebSocket(data.signed_url);
+
+        elevenLabsWs.on('open', () => {
+          console.log('Connected to ElevenLabs Conversational AI');
+        });
+
+        elevenLabsWs.on('message', (data: string) => {
+          try {
+            const msg = JSON.parse(data);
+            
+            // Handle audio from ElevenLabs
+            if (msg.type === 'audio' && msg.audio_event?.audio_base_64) {
+              if (streamSid) {
+                // ElevenLabs sends PCM16 at 16kHz
+                const pcm16kBuffer = Buffer.from(msg.audio_event.audio_base_64, 'base64');
+                const pcm8kBuffer = resample16to8(pcm16kBuffer);
+                const mulawBuffer = pcmToMulaw(pcm8kBuffer);
+                
+                connection.send(JSON.stringify({
+                  event: 'media',
+                  streamSid: streamSid,
+                  media: { payload: mulawBuffer.toString('base64') }
+                }));
+              }
+            } 
+            // Handle transcriptions
+            else if (msg.type === 'agent_response') {
+              const text = msg.agent_response_event?.agent_response;
+              if (text) {
+                console.log(`Agent: ${text}`);
+                transcript += `Agent: ${text}\n`;
+                updateCallLog(transcript);
+                
+                // Simple qualification check
+                const lowerText = text.toLowerCase();
+                if (lowerText.includes('qualified') || lowerText.includes('interested')) {
+                  updateLeadStatus('qualified', text);
+                } else if (lowerText.includes('not interested') || lowerText.includes('rejected')) {
+                  updateLeadStatus('rejected', text);
+                }
+              }
+            } else if (msg.type === 'user_transcript') {
+              const text = msg.user_transcription_event?.user_transcript;
+              if (text) {
+                console.log(`User: ${text}`);
+                transcript += `User: ${text}\n`;
+                updateCallLog(transcript);
+              }
+            }
+          } catch (error) {
+            console.error('Error processing ElevenLabs message:', error);
+          }
+        });
+
+        elevenLabsWs.on('close', () => {
+          console.log('Disconnected from ElevenLabs');
+        });
+
+        elevenLabsWs.on('error', (error) => {
+          console.error('ElevenLabs WebSocket error:', error);
+        });
+
+      } catch (error) {
+        console.error('Error setting up ElevenLabs:', error);
+      }
     };
 
-    openAiWs.on('open', () => {
-      // #region debug-point openai-open
-      reportDebug('openai-connection-open', {}, 'H1');
-      // #endregion
-      console.log('Connected to OpenAI Realtime API');
-      sendSessionUpdate();
-    });
-
-    openAiWs.on('message', (data: string) => {
-      try {
-        const response = JSON.parse(data);
-        // #region debug-point openai-message
-        if (response.type !== 'input_audio_buffer.append') {
-          reportDebug('openai-message-received', { type: response.type, error: response.error });
-        }
-        // #endregion
-
-        // Handle audio output from AI
-        if (response.type === 'response.output_audio.delta' && response.delta && streamSid) {
-          // #region debug-point ai-audio-out
-          reportDebug('ai-audio-delta-sent', { length: response.delta.length }, 'H3');
-          // #endregion
-          
-          // Convert PCM16 (24kHz) from OpenAI back to Mu-law (8kHz) for Twilio
-          const pcm24kBuffer = Buffer.from(response.delta, 'base64');
-          const pcm8kBuffer = resample24to8(pcm24kBuffer);
-          const mulawBuffer = pcmToMulaw(pcm8kBuffer);
-          
-          const audioDelta = {
-            event: 'media',
-            streamSid: streamSid,
-            media: { payload: mulawBuffer.toString('base64') }
-          };
-          connection.send(JSON.stringify(audioDelta));
-        }
-
-        // Handle text response for transcript
-        if (response.type === 'response.audio_transcript.done') {
-          transcript += `AI: ${response.transcript}\n`;
-          updateCallLog(transcript);
-        }
-
-        if (response.type === 'conversation.item.input_audio_transcription.completed') {
-          transcript += `User: ${response.transcript}\n`;
-          updateCallLog(transcript);
-        }
-
-        // Handle qualification logic based on AI response
-        if (response.type === 'response.done') {
-          const text = response.response?.output?.[0]?.content?.[0]?.text || '';
-          const lowerText = text.toLowerCase();
-          
-          if (lowerText.includes('qualified') || lowerText.includes('interested')) {
-            updateLeadStatus('qualified', text);
-          } else if (lowerText.includes('not interested') || lowerText.includes('rejected')) {
-            updateLeadStatus('rejected', text);
-          }
-        }
-
-        if (response.type === 'error') {
-          console.error('OpenAI Error:', response.error);
-        }
-      } catch (error) {
-        console.error('Error processing OpenAI message:', error);
-      }
-    });
+    setupElevenLabs();
 
     connection.on('message', (message) => {
       try {
         const data = JSON.parse(message.toString());
-        // #region debug-point twilio-message
-        if (data.event !== 'media') {
-          reportDebug('twilio-message-received', { event: data.event });
-        }
-        // #endregion
 
         switch (data.event) {
           case 'start':
             streamSid = data.start.streamSid;
             callSid = data.start.callSid;
             console.log(`Stream started with SID: ${streamSid}, Call SID: ${callSid}`);
-            // Remove proactive greeting to let VAD trigger naturally when the user speaks.
-            // The AI will now wait for the user to say "Hello" before speaking.
-            console.log('Stream started. Waiting for user to speak...');
             break;
           case 'media':
-            if (openAiWs.readyState === WebSocket.OPEN) {
-              // #region debug-point user-audio-in
-              // reportDebug('user-audio-received', { length: data.media.payload.length });
-              // #endregion
-              
-              // Convert Mu-law (8kHz) from Twilio to PCM16 (24kHz) for OpenAI
+            if (elevenLabsWs && elevenLabsWs.readyState === WebSocket.OPEN) {
+              // Convert Mu-law (8kHz) from Twilio to PCM16 (16kHz) for ElevenLabs
               const mulawBuffer = Buffer.from(data.media.payload, 'base64');
               const pcm8kBuffer = mulawToPcm(mulawBuffer);
-              const pcm24kBuffer = resample8to24(pcm8kBuffer);
+              const pcm16kBuffer = resample8to16(pcm8kBuffer);
               
-              const audioAppend = {
-                type: 'input_audio_buffer.append',
-                audio: pcm24kBuffer.toString('base64')
-              };
-              openAiWs.send(JSON.stringify(audioAppend));
+              elevenLabsWs.send(JSON.stringify({
+                user_audio_chunk: pcm16kBuffer.toString('base64')
+              }));
             }
             break;
           case 'stop':
             console.log('Twilio Media Stream stopped event received');
             updateCallLog(transcript);
             updateLeadStatus('completed', 'Call ended (stop event).');
-            if (openAiWs.readyState === WebSocket.OPEN) {
-              openAiWs.close();
+            if (elevenLabsWs && elevenLabsWs.readyState === WebSocket.OPEN) {
+              elevenLabsWs.close();
             }
             break;
         }
@@ -369,19 +326,10 @@ export function setupMediaStream(server: Server) {
     connection.on('close', () => {
       console.log('Twilio connection closed');
       updateCallLog(transcript);
-      // Ensure status is updated if not already done
       updateLeadStatus('completed', 'Call ended (connection closed).');
-      if (openAiWs.readyState === WebSocket.OPEN) {
-        openAiWs.close();
+      if (elevenLabsWs && elevenLabsWs.readyState === WebSocket.OPEN) {
+        elevenLabsWs.close();
       }
-    });
-
-    openAiWs.on('close', () => {
-      console.log('OpenAI connection closed');
-    });
-
-    openAiWs.on('error', (error) => {
-      console.error('OpenAI WebSocket Error:', error);
     });
   });
 }
