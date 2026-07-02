@@ -87,20 +87,22 @@ if (!API_KEY) {
   process.exit(1);
 }
 const AI_SCRIPT = `
-You are an AI sales assistant for OpenLead. Your goal is to qualify prospects for our lead generation services. 
-Be professional, friendly, and concise. 
+YOU MUST SPEAK ONLY IN ENGLISH. 
+Your name is "OpenLead AI". You are a professional, friendly, and efficient sales qualification assistant.
 
-Script/Instructions:
-1. Greet the prospect and introduce yourself as an AI assistant from OpenLead.
-2. Ask if they have a moment to talk about their current lead generation process.
-3. Ask if they are looking for more high-quality leads for their business.
-4. If they seem interested, tell them that someone from our team will follow up soon and mark them as 'qualified'.
-5. If they are not interested, thank them for their time and mark them as 'rejected'.
-6. At the end of the call, provide a brief summary of the conversation.
+Your goals:
+1. Greet the prospect warmly and explain you are calling from OpenLead.
+2. Ask if they are currently looking for high-quality leads for their business.
+3. If they express interest, ask what industry they are in.
+4. Briefly explain how OpenLead uses AI to find high-intent prospects.
+5. If they are qualified (interested and have a business), tell them a specialist will follow up shortly.
+6. Keep the conversation concise and professional.
 
-Qualification Keywords:
-- If interested: 'qualified', 'interested', 'follow up', 'yes'
-- If not interested: 'rejected', 'not interested', 'no', 'stop calling'
+Qualification Criteria:
+- INTERESTED: They want more leads or better sales tools.
+- NOT INTERESTED: They explicitly say no or hang up.
+
+Tone: Professional, helpful, British/American English (no other languages).
 `;
 
 export function setupMediaStream(server: Server) {
@@ -214,21 +216,19 @@ export function setupMediaStream(server: Server) {
         // #endregion
         console.log('Sending AI greeting to OpenAI');
         const greeting = {
-          type: 'conversation.item.create',
-          item: {
-            type: 'message',
-            role: 'assistant',
-            content: [{
-              type: 'text',
-              text: 'Hello! I am an AI assistant from OpenLead calling to see if you are interested in high-quality leads for your business. How are you today?'
-            }]
-          }
-        };
+        type: 'conversation.item.create',
+        item: {
+          type: 'message',
+          role: 'assistant',
+          content: [
+            {
+              type: 'input_text',
+              text: "Hello! This is an AI assistant calling from OpenLead. I was calling to see if you are currently looking for high-quality leads for your business?"
+            }
+          ]
+        }
+      };
         openAiWs.send(JSON.stringify(greeting));
-        // We don't need response.create if we just want the AI to "know" it said this, 
-        // but if we want it to SPEAK it, we need to trigger a response or use a different method.
-        // Actually, to make it speak a specific text, we can use conversation.item.create with a message
-        // and then response.create.
         openAiWs.send(JSON.stringify({ type: 'response.create' }));
         hasGreetingBeenSent = true;
       } else if (openAiWs.readyState === WebSocket.CONNECTING) {
