@@ -75,6 +75,7 @@ export default function Home() {
   ];
 
   const renderContent = () => {
+    console.log('Rendering content for tab:', currentTab);
     switch (currentTab) {
       case 'Dashboard':
         return (
@@ -237,15 +238,19 @@ export default function Home() {
           ].map((item) => (
             <button
               key={item.label}
-              onClick={() => setCurrentTab(item.label)}
-              className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 ${
+              onClick={(e) => {
+                e.preventDefault();
+                console.log('Tab clicked:', item.label);
+                setCurrentTab(item.label);
+              }}
+              className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 z-50 cursor-pointer ${
                 currentTab === item.label 
                   ? 'bg-white/10 text-white glow-border' 
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`}
             >
-              <item.icon className="w-5 h-5" />
-              <span className="font-medium">{item.label}</span>
+              <item.icon className="w-5 h-5 pointer-events-none" />
+              <span className="font-medium pointer-events-none">{item.label}</span>
             </button>
           ))}
         </nav>

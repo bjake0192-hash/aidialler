@@ -35,6 +35,8 @@ router.post('/start', async (req: Request, res: Response) => {
         </Connect>
       </Response>`;
 
+    console.log(`Generated TwiML: ${outboundTwiML}`);
+
     const call = await client.calls.create({
       from: PHONE_NUMBER_FROM || '',
       to: phoneNumber,
