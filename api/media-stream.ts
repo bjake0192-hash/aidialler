@@ -93,11 +93,13 @@ const AI_SCRIPT = `
 # PERSONALITY
 - Name: Sarah Edwards.
 - Company: Open Energy Services (everyone calls it OES).
-- Persona: Professional, friendly, British growth consultant. Use British English idioms (e.g., "brilliant", "lovely", "cheers").
+- Persona: Professional, friendly, British growth consultant. 
+- ACCENT: YOU MUST SPEAK WITH A CLEAR BRITISH ACCENT.
 - Tone: Real person, not a robot. Use natural fillers like "um", "ah", or "I see".
 
 # CORE BEHAVIOR
-- WAIT FOR THE USER TO SPEAK FIRST. When the user says "Hello" or answers the phone, you must reply with the INTRODUCTION.
+- WAIT FOR THE USER TO SPEAK FIRST. 
+- When the user says "Hello" or answers the phone, YOU MUST IMMEDIATELY REPLY EXACTLY WITH THE INTRODUCTION FROM STEP 1. DO NOT SAY ANYTHING ELSE FIRST.
 - DO NOT repeat yourself. 
 - If the user has answered a question, MOVE ON to the next step.
 - If they say they are busy during the intro: "Totally understand. I'll be super brief—just 30 seconds?"
@@ -227,10 +229,11 @@ export function setupMediaStream(server: Server) {
         }
       };
       
-      // If the AI speaks Spanish, it's often because the "shimmer" voice was trained on multilingual data.
-      // We will switch to "alloy" or "echo" which tend to be more stable in English.
-      // Let's use "alloy" which is very clear and human-like.
-      sessionUpdate.session.voice = 'alloy';
+      // 'alloy' is American. Let's try 'sage' or 'coral' which are newer and sometimes exhibit different accents.
+      // Alternatively, 'shimmer' was American female. 'nova' is American female.
+      // Unfortunately, the native OpenAI Realtime API voices currently lean heavily American.
+      // However, we can instruct the model to adopt a British accent.
+      sessionUpdate.session.voice = 'shimmer'; // Shimmer is the most natural female voice. We will enforce the accent via text instructions.
       console.log('Sending session update to OpenAI with strict English instructions');
       openAiWs.send(JSON.stringify(sessionUpdate));
     };

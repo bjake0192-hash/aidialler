@@ -1427,3 +1427,118 @@
 {"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.done"}, "timestamp": "2026-07-02T15:27:06.307Z", "ts": 1783006026309}
 {"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "rate_limits.updated"}, "timestamp": "2026-07-02T15:27:06.308Z", "ts": 1783006026309}
 {"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T15:27:10.800Z", "ts": 1783006030811}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T15:30:16.532Z", "ts": 1783006216557}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T15:30:16.797Z", "ts": 1783006216800}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T15:30:16.798Z", "ts": 1783006216801}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T15:30:17.467Z", "ts": 1783006217471}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "session.created"}, "timestamp": "2026-07-02T15:30:17.478Z", "ts": 1783006217480}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "missing_required_parameter", "message": "Missing required parameter: 'session.type'.", "param": "session.type", "event_id": null}}, "timestamp": "2026-07-02T15:30:17.710Z", "ts": 1783006217716}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.speech_started"}, "timestamp": "2026-07-02T15:30:22.915Z", "ts": 1783006222918}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.speech_stopped"}, "timestamp": "2026-07-02T15:30:23.458Z", "ts": 1783006223460}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.committed"}, "timestamp": "2026-07-02T15:30:23.461Z", "ts": 1783006223462}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.added"}, "timestamp": "2026-07-02T15:30:23.462Z", "ts": 1783006223463}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.done"}, "timestamp": "2026-07-02T15:30:23.463Z", "ts": 1783006223464}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.created"}, "timestamp": "2026-07-02T15:30:23.466Z", "ts": 1783006223467}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.added"}, "timestamp": "2026-07-02T15:30:23.705Z", "ts": 1783006223707}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.added"}, "timestamp": "2026-07-02T15:30:23.706Z", "ts": 1783006223707}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.added"}, "timestamp": "2026-07-02T15:30:23.724Z", "ts": 1783006223726}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:23.725Z", "ts": 1783006223727}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:23.728Z", "ts": 1783006223729}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:23.738Z", "ts": 1783006223739}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:23.866Z", "ts": 1783006223869}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 6400}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:23.867Z", "ts": 1783006223871}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:23.960Z", "ts": 1783006223967}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 9600}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:23.960Z", "ts": 1783006223968}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.084Z", "ts": 1783006224088}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.084Z", "ts": 1783006224089}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.088Z", "ts": 1783006224090}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.092Z", "ts": 1783006224094}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.093Z", "ts": 1783006224095}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.094Z", "ts": 1783006224095}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.096Z", "ts": 1783006224097}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.235Z", "ts": 1783006224239}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.236Z", "ts": 1783006224241}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.240Z", "ts": 1783006224244}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.241Z", "ts": 1783006224245}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.245Z", "ts": 1783006224247}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.247Z", "ts": 1783006224248}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.248Z", "ts": 1783006224249}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.249Z", "ts": 1783006224250}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:24.250Z", "ts": 1783006224250}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.256Z", "ts": 1783006224257}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.256Z", "ts": 1783006224257}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.314Z", "ts": 1783006224318}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.316Z", "ts": 1783006224319}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.338Z", "ts": 1783006224342}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.339Z", "ts": 1783006224343}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.393Z", "ts": 1783006224396}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.394Z", "ts": 1783006224397}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.450Z", "ts": 1783006224453}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.451Z", "ts": 1783006224454}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:24.474Z", "ts": 1783006224477}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 38400}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:24.475Z", "ts": 1783006224477}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.done"}, "timestamp": "2026-07-02T15:30:24.477Z", "ts": 1783006224478}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.done"}, "timestamp": "2026-07-02T15:30:24.478Z", "ts": 1783006224479}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.done"}, "timestamp": "2026-07-02T15:30:24.479Z", "ts": 1783006224480}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.done"}, "timestamp": "2026-07-02T15:30:24.480Z", "ts": 1783006224481}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.done"}, "timestamp": "2026-07-02T15:30:24.480Z", "ts": 1783006224481}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.done"}, "timestamp": "2026-07-02T15:30:24.481Z", "ts": 1783006224484}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "rate_limits.updated"}, "timestamp": "2026-07-02T15:30:24.496Z", "ts": 1783006224497}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.speech_started"}, "timestamp": "2026-07-02T15:30:25.406Z", "ts": 1783006225409}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.speech_stopped"}, "timestamp": "2026-07-02T15:30:25.781Z", "ts": 1783006225782}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "input_audio_buffer.committed"}, "timestamp": "2026-07-02T15:30:25.782Z", "ts": 1783006225783}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.added"}, "timestamp": "2026-07-02T15:30:25.782Z", "ts": 1783006225783}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.done"}, "timestamp": "2026-07-02T15:30:25.783Z", "ts": 1783006225783}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.created"}, "timestamp": "2026-07-02T15:30:25.811Z", "ts": 1783006225812}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.added"}, "timestamp": "2026-07-02T15:30:26.068Z", "ts": 1783006226070}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.added"}, "timestamp": "2026-07-02T15:30:26.070Z", "ts": 1783006226072}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.added"}, "timestamp": "2026-07-02T15:30:26.073Z", "ts": 1783006226075}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.074Z", "ts": 1783006226076}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.078Z", "ts": 1783006226079}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.085Z", "ts": 1783006226086}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.108Z", "ts": 1783006226109}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.204Z", "ts": 1783006226208}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 6400}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.205Z", "ts": 1783006226209}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.331Z", "ts": 1783006226335}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 9600}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.333Z", "ts": 1783006226336}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.342Z", "ts": 1783006226343}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.342Z", "ts": 1783006226344}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.358Z", "ts": 1783006226360}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.359Z", "ts": 1783006226360}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.362Z", "ts": 1783006226364}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.363Z", "ts": 1783006226364}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.402Z", "ts": 1783006226404}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.402Z", "ts": 1783006226405}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.513Z", "ts": 1783006226516}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.514Z", "ts": 1783006226517}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.516Z", "ts": 1783006226518}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.518Z", "ts": 1783006226520}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.520Z", "ts": 1783006226521}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.521Z", "ts": 1783006226522}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.522Z", "ts": 1783006226523}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.574Z", "ts": 1783006226577}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.574Z", "ts": 1783006226577}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.608Z", "ts": 1783006226611}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.609Z", "ts": 1783006226612}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.649Z", "ts": 1783006226652}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.650Z", "ts": 1783006226653}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.652Z", "ts": 1783006226655}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:30:26.655Z", "ts": 1783006226657}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.740Z", "ts": 1783006226743}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.741Z", "ts": 1783006226744}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.774Z", "ts": 1783006226777}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.775Z", "ts": 1783006226778}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.816Z", "ts": 1783006226818}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.817Z", "ts": 1783006226819}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.878Z", "ts": 1783006226880}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.878Z", "ts": 1783006226880}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:30:26.885Z", "ts": 1783006226886}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 32000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:30:26.885Z", "ts": 1783006226887}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.done"}, "timestamp": "2026-07-02T15:30:26.896Z", "ts": 1783006226897}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.done"}, "timestamp": "2026-07-02T15:30:26.898Z", "ts": 1783006226899}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.done"}, "timestamp": "2026-07-02T15:30:26.898Z", "ts": 1783006226899}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.done"}, "timestamp": "2026-07-02T15:30:26.899Z", "ts": 1783006226899}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.done"}, "timestamp": "2026-07-02T15:30:26.900Z", "ts": 1783006226900}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.done"}, "timestamp": "2026-07-02T15:30:26.901Z", "ts": 1783006226903}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "rate_limits.updated"}, "timestamp": "2026-07-02T15:30:26.908Z", "ts": 1783006226909}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T15:30:32.461Z", "ts": 1783006232467}
