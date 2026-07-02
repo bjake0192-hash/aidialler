@@ -46,9 +46,12 @@ function resample8to24(pcm8k: Buffer): Buffer {
   const pcm24k = Buffer.alloc(pcm8k.length * 3);
   for (let i = 0; i < pcm8k.length / 2; i++) {
     const sample = pcm8k.readInt16LE(i * 2);
+    // Basic linear interpolation to reduce noise that might trigger wrong language detection
+    const nextSample = (i < (pcm8k.length / 2) - 1) ? pcm8k.readInt16LE(i * 2 + 2) : sample;
+    
     pcm24k.writeInt16LE(sample, i * 6);
-    pcm24k.writeInt16LE(sample, i * 6 + 2);
-    pcm24k.writeInt16LE(sample, i * 6 + 4);
+    pcm24k.writeInt16LE(Math.round(sample + (nextSample - sample) * (1/3)), i * 6 + 2);
+    pcm24k.writeInt16LE(Math.round(sample + (nextSample - sample) * (2/3)), i * 6 + 4);
   }
   return pcm24k;
 }
@@ -87,11 +90,14 @@ if (!API_KEY) {
   process.exit(1);
 }
 const AI_SCRIPT = `
-# SYSTEM ROLE
+# MANDATORY LANGUAGE RULE
+- YOU MUST SPEAK ONLY IN ENGLISH.
+- DO NOT SPEAK SPANISH, ARABIC, OR ANY OTHER LANGUAGE.
+- IF THE USER SPEAKS ANOTHER LANGUAGE, YOU MUST RESPOND IN ENGLISH SAYING YOU ONLY SPEAK ENGLISH.
+- THIS IS A HARD CONSTRAINT.
+
+# ROLE
 You are a professional sales qualification assistant for OpenLead. 
-YOU ARE STRICTLY FORBIDDEN FROM SPEAKING ANY LANGUAGE OTHER THAN ENGLISH.
-EVERY WORD YOU SAY MUST BE IN ENGLISH. 
-DO NOT RESPOND IN SPANISH OR ANY OTHER LANGUAGE EVEN IF THE USER SPEAKS IT.
 
 # GOALS
 1. Greet the prospect warmly and explain you are calling from OpenLead.
@@ -200,7 +206,7 @@ export function setupMediaStream(server: Server) {
           instructions: AI_SCRIPT,
           modalities: ["text", "audio"],
           temperature: 0.6,
-          input_audio_transcription: { model: 'whisper-1' }
+          input_audio_transcription: { model: 'whisper-1', language: 'en' }
         }
       };
       console.log('Sending session update to OpenAI with strict English instructions');
