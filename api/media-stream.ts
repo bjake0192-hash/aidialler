@@ -5,6 +5,42 @@ import { supabase } from './lib/supabase.js';
 
 dotenv.config();
 
+// Helper functions for audio conversion
+function mulawToPcm(mulaw: Buffer): Buffer {
+  const pcm = Buffer.alloc(mulaw.length * 2);
+  for (let i = 0; i < mulaw.length; i++) {
+    let u = ~mulaw[i];
+    let sign = (u & 0x80);
+    let exponent = (u & 0x70) >> 4;
+    let mantissa = (u & 0x0F);
+    let sample = (mantissa << 3) + 0x84;
+    sample <<= (exponent);
+    sample -= 0x84;
+    pcm.writeInt16LE(sign ? -sample : sample, i * 2);
+  }
+  return pcm;
+}
+
+function pcmToMulaw(pcm: Buffer): Buffer {
+  const mulaw = Buffer.alloc(pcm.length / 2);
+  for (let i = 0; i < mulaw.length; i++) {
+    let sample = pcm.readInt16LE(i * 2);
+    let sign = (sample < 0) ? 0x80 : 0;
+    if (sample < 0) sample = -sample;
+    sample += 0x84;
+    if (sample > 32767) sample = 32767;
+    let exponent = 0;
+    let tmp = sample >> 7;
+    while (tmp > 1) {
+      tmp >>= 1;
+      exponent++;
+    }
+    let mantissa = (sample >> (exponent + 3)) & 0x0F;
+    mulaw[i] = ~(sign | (exponent << 4) | mantissa);
+  }
+  return mulaw;
+}
+
 const { OPENAI_API_KEY, DOMAIN } = process.env;
 const API_KEY = OPENAI_API_KEY?.trim();
 
@@ -59,8 +95,8 @@ export function setupMediaStream(server: Server) {
     let transcript = '';
     let hasGreetingBeenSent = false;
 
-    console.log(`Initiating OpenAI WebSocket connection with key length: ${API_KEY?.length}`);
-    const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-4o-realtime-preview', {
+    console.log(`Initiating OpenAI WebSocket connection with key starting with: ${API_KEY?.slice(0, 12)}...`);
+    const openAiWs = new WebSocket('wss://api.openai.com/v1/realtime?model=gpt-realtime', {
       headers: {
         Authorization: `Bearer ${API_KEY}`,
       },
@@ -129,8 +165,8 @@ export function setupMediaStream(server: Server) {
         type: 'session.update',
         session: {
           turn_detection: { type: 'server_vad' },
-          input_audio_format: 'g711_ulaw',
-          output_audio_format: 'g711_ulaw',
+          input_audio_format: 'pcm16',
+          output_audio_format: 'pcm16',
           voice: 'alloy',
           instructions: AI_SCRIPT,
           modalities: ["text", "audio"],
@@ -138,7 +174,7 @@ export function setupMediaStream(server: Server) {
           input_audio_transcription: { model: 'whisper-1' }
         }
       };
-      console.log('Sending session update to OpenAI');
+      console.log('Sending session update to OpenAI with pcm16 format');
       openAiWs.send(JSON.stringify(sessionUpdate));
     };
 
@@ -203,10 +239,15 @@ export function setupMediaStream(server: Server) {
           // #region debug-point ai-audio-out
           reportDebug('ai-audio-delta-sent', { length: response.delta.length }, 'H3');
           // #endregion
+          
+          // Convert PCM16 from OpenAI back to Mu-law for Twilio
+          const pcmBuffer = Buffer.from(response.delta, 'base64');
+          const mulawBuffer = pcmToMulaw(pcmBuffer);
+          
           const audioDelta = {
             event: 'media',
             streamSid: streamSid,
-            media: { payload: response.delta }
+            media: { payload: mulawBuffer.toString('base64') }
           };
           connection.send(JSON.stringify(audioDelta));
         }
@@ -264,9 +305,14 @@ export function setupMediaStream(server: Server) {
               // #region debug-point user-audio-in
               // reportDebug('user-audio-received', { length: data.media.payload.length });
               // #endregion
+              
+              // Convert Mu-law from Twilio to PCM16 for OpenAI
+              const mulawBuffer = Buffer.from(data.media.payload, 'base64');
+              const pcmBuffer = mulawToPcm(mulawBuffer);
+              
               const audioAppend = {
                 type: 'input_audio_buffer.append',
-                audio: data.media.payload
+                audio: pcmBuffer.toString('base64')
               };
               openAiWs.send(JSON.stringify(audioAppend));
             }

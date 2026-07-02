@@ -37,3 +37,131 @@
 {"sessionId": "ai-dialler-silence-bug", "event": "sending-greeting", "data": {}, "hypothesisId": "H4", "timestamp": "2026-07-02T14:39:08.462Z", "ts": 1783003148516}
 {"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error"}, "timestamp": "2026-07-02T14:39:08.549Z", "ts": 1783003148708}
 {"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:39:16.902Z", "ts": 1783003157116}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:45:33.806Z", "ts": 1783003533850}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:45:34.093Z", "ts": 1783003534096}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:45:34.094Z", "ts": 1783003534097}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:45:34.861Z", "ts": 1783003534867}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-realtime-preview` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:45:34.869Z", "ts": 1783003534877}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:46:17.585Z", "ts": 1783003577602}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:46:27.910Z", "ts": 1783003587918}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:46:28.156Z", "ts": 1783003588159}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:46:28.157Z", "ts": 1783003588160}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:46:28.744Z", "ts": 1783003588748}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-realtime-preview` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:46:28.749Z", "ts": 1783003588754}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:46:35.936Z", "ts": 1783003595939}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:48:06.492Z", "ts": 1783003686511}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:48:06.744Z", "ts": 1783003686747}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:48:06.746Z", "ts": 1783003686748}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:48:07.390Z", "ts": 1783003687396}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-realtime-preview-2024-10-01` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:48:07.397Z", "ts": 1783003687403}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:48:16.491Z", "ts": 1783003696502}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:55:33.505Z", "ts": 1783004133543}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:55:33.815Z", "ts": 1783004133818}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:55:33.817Z", "ts": 1783004133819}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:55:35.059Z", "ts": 1783004135067}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-mini-realtime-preview-2024-12-17` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:55:35.068Z", "ts": 1783004135072}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:55:45.189Z", "ts": 1783004145200}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:56:04.897Z", "ts": 1783004164903}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:56:05.154Z", "ts": 1783004165156}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:56:05.155Z", "ts": 1783004165157}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:56:05.982Z", "ts": 1783004165985}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-mini-realtime-preview-2024-12-17` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:56:05.985Z", "ts": 1783004165987}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:56:13.251Z", "ts": 1783004173262}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T14:59:07.349Z", "ts": 1783004347356}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T14:59:07.594Z", "ts": 1783004347597}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T14:59:07.595Z", "ts": 1783004347598}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T14:59:08.477Z", "ts": 1783004348480}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "model_not_found", "message": "The model `gpt-4o-realtime-preview` does not exist or you do not have access to it.", "param": null, "event_id": null}}, "timestamp": "2026-07-02T14:59:08.481Z", "ts": 1783004348485}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T14:59:24.704Z", "ts": 1783004364721}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-connection-established", "data": {}, "timestamp": "2026-07-02T15:06:58.568Z", "ts": 1783004818602}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "connected"}, "timestamp": "2026-07-02T15:06:59.120Z", "ts": 1783004819124}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "start"}, "timestamp": "2026-07-02T15:06:59.122Z", "ts": 1783004819125}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-connection-open", "data": {}, "hypothesisId": "H1", "timestamp": "2026-07-02T15:07:01.259Z", "ts": 1783004821264}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "session.created"}, "timestamp": "2026-07-02T15:07:01.266Z", "ts": 1783004821268}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "missing_required_parameter", "message": "Missing required parameter: 'session.type'.", "param": "session.type", "event_id": null}}, "timestamp": "2026-07-02T15:07:01.539Z", "ts": 1783004821549}
+{"sessionId": "ai-dialler-silence-bug", "event": "sending-greeting", "data": {}, "hypothesisId": "H4", "timestamp": "2026-07-02T15:07:01.627Z", "ts": 1783004821634}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "error", "error": {"type": "invalid_request_error", "code": "invalid_value", "message": "Invalid value: 'text'. Value must be 'output_text'.", "param": "item.content[0].type", "event_id": null}}, "timestamp": "2026-07-02T15:07:01.889Z", "ts": 1783004821894}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.created"}, "timestamp": "2026-07-02T15:07:01.894Z", "ts": 1783004821896}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.added"}, "timestamp": "2026-07-02T15:07:02.086Z", "ts": 1783004822086}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.added"}, "timestamp": "2026-07-02T15:07:02.086Z", "ts": 1783004822087}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.added"}, "timestamp": "2026-07-02T15:07:02.134Z", "ts": 1783004822135}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.135Z", "ts": 1783004822136}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.135Z", "ts": 1783004822137}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.136Z", "ts": 1783004822137}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.244Z", "ts": 1783004822246}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 6400}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.245Z", "ts": 1783004822247}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.402Z", "ts": 1783004822405}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 9600}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.403Z", "ts": 1783004822406}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.475Z", "ts": 1783004822482}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.476Z", "ts": 1783004822483}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.482Z", "ts": 1783004822484}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.484Z", "ts": 1783004822485}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.485Z", "ts": 1783004822486}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.486Z", "ts": 1783004822487}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.487Z", "ts": 1783004822489}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.487Z", "ts": 1783004822489}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.520Z", "ts": 1783004822522}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.520Z", "ts": 1783004822523}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.522Z", "ts": 1783004822524}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.524Z", "ts": 1783004822526}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.526Z", "ts": 1783004822527}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.544Z", "ts": 1783004822546}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.544Z", "ts": 1783004822546}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.569Z", "ts": 1783004822571}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.569Z", "ts": 1783004822571}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.663Z", "ts": 1783004822666}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.665Z", "ts": 1783004822667}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.666Z", "ts": 1783004822668}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.668Z", "ts": 1783004822669}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.669Z", "ts": 1783004822670}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.669Z", "ts": 1783004822671}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.671Z", "ts": 1783004822672}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.672Z", "ts": 1783004822675}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.675Z", "ts": 1783004822679}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.676Z", "ts": 1783004822680}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:02.676Z", "ts": 1783004822680}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.713Z", "ts": 1783004822715}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.714Z", "ts": 1783004822715}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.781Z", "ts": 1783004822784}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.782Z", "ts": 1783004822785}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.866Z", "ts": 1783004822867}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.866Z", "ts": 1783004822869}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.867Z", "ts": 1783004822870}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.869Z", "ts": 1783004822871}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:02.915Z", "ts": 1783004822917}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:02.916Z", "ts": 1783004822917}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.015Z", "ts": 1783004823018}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.015Z", "ts": 1783004823021}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.021Z", "ts": 1783004823023}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.023Z", "ts": 1783004823023}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.023Z", "ts": 1783004823024}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.024Z", "ts": 1783004823025}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.025Z", "ts": 1783004823026}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.025Z", "ts": 1783004823026}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.delta"}, "timestamp": "2026-07-02T15:07:03.026Z", "ts": 1783004823027}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.080Z", "ts": 1783004823083}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.081Z", "ts": 1783004823084}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.153Z", "ts": 1783004823155}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.154Z", "ts": 1783004823155}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.155Z", "ts": 1783004823157}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.156Z", "ts": 1783004823158}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.295Z", "ts": 1783004823296}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.295Z", "ts": 1783004823297}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.296Z", "ts": 1783004823297}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.296Z", "ts": 1783004823297}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.296Z", "ts": 1783004823298}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.297Z", "ts": 1783004823298}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.328Z", "ts": 1783004823330}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.329Z", "ts": 1783004823331}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.375Z", "ts": 1783004823376}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 16000}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.375Z", "ts": 1783004823376}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.delta"}, "timestamp": "2026-07-02T15:07:03.400Z", "ts": 1783004823401}
+{"sessionId": "ai-dialler-silence-bug", "event": "ai-audio-delta-sent", "data": {"length": 35200}, "hypothesisId": "H3", "timestamp": "2026-07-02T15:07:03.400Z", "ts": 1783004823402}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio.done"}, "timestamp": "2026-07-02T15:07:03.443Z", "ts": 1783004823444}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_audio_transcript.done"}, "timestamp": "2026-07-02T15:07:03.445Z", "ts": 1783004823445}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.content_part.done"}, "timestamp": "2026-07-02T15:07:03.445Z", "ts": 1783004823446}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "conversation.item.done"}, "timestamp": "2026-07-02T15:07:03.446Z", "ts": 1783004823447}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.output_item.done"}, "timestamp": "2026-07-02T15:07:03.447Z", "ts": 1783004823448}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "response.done"}, "timestamp": "2026-07-02T15:07:03.447Z", "ts": 1783004823448}
+{"sessionId": "ai-dialler-silence-bug", "event": "openai-message-received", "data": {"type": "rate_limits.updated"}, "timestamp": "2026-07-02T15:07:03.448Z", "ts": 1783004823448}
+{"sessionId": "ai-dialler-silence-bug", "event": "twilio-message-received", "data": {"event": "stop"}, "timestamp": "2026-07-02T15:07:10.368Z", "ts": 1783004830387}
