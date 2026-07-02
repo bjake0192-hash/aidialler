@@ -24,6 +24,7 @@ export default function Home() {
   const [isCalling, setIsCalling] = useState(false);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [currentTab, setCurrentTab] = useState('Dashboard');
 
   const fetchLeads = async () => {
     try {
@@ -73,6 +74,149 @@ export default function Home() {
     { label: 'Conversion Rate', value: leads.length > 0 ? `${((leads.filter(l => l.status === 'qualified').length / leads.length) * 100).toFixed(1)}%` : '0%', icon: TrendingUp, color: 'text-cyan-400' },
   ];
 
+  const renderContent = () => {
+    switch (currentTab) {
+      case 'Dashboard':
+        return (
+          <>
+            <header className="flex justify-between items-center mb-10">
+              <div>
+                <h1 className="text-3xl font-bold tracking-tight mb-1">Campaign Overview</h1>
+                <p className="text-slate-400">Welcome back, here's what's happening today.</p>
+              </div>
+              <div className="flex gap-4">
+                <div className="relative group">
+                  <input
+                    type="text"
+                    placeholder="Enter phone number..."
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
+                  />
+                </div>
+                <button
+                  onClick={handleStartCall}
+                  disabled={isCalling}
+                  className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all glow-blue disabled:opacity-50"
+                >
+                  <Play className="w-4 h-4" />
+                  {isCalling ? 'Initiating...' : 'Start AI Call'}
+                </button>
+              </div>
+            </header>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
+              {stats.map((stat, i) => (
+                <motion.div
+                  key={stat.label}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: i * 0.1 }}
+                  className="glass-card p-6 group hover:border-indigo-500/30 transition-all duration-300"
+                >
+                  <div className="flex justify-between items-start mb-4">
+                    <div className={`p-2 rounded-lg bg-white/5 ${stat.color}`}>
+                      <stat.icon className="w-6 h-6" />
+                    </div>
+                    <span className="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
+                      +12%
+                    </span>
+                  </div>
+                  <h3 className="text-slate-400 text-sm font-medium mb-1">{stat.label}</h3>
+                  <p className="text-3xl font-bold tracking-tight">{stat.value}</p>
+                </motion.div>
+              ))}
+            </div>
+
+            <div className="glass-card overflow-hidden">
+              <div className="p-6 border-b border-white/5 flex justify-between items-center">
+                <h2 className="text-xl font-bold">Recent Leads</h2>
+                <button onClick={() => setCurrentTab('Leads')} className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">View all</button>
+              </div>
+              <table className="w-full text-left">
+                <thead>
+                  <tr className="text-slate-400 text-sm font-medium border-b border-white/5">
+                    <th className="px-6 py-4">Lead</th>
+                    <th className="px-6 py-4">Phone Number</th>
+                    <th className="px-6 py-4">Status</th>
+                    <th className="px-6 py-4">Time</th>
+                    <th className="px-6 py-4 text-right">Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-white/5">
+                  {isLoading ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                        <div className="flex flex-col items-center gap-2">
+                          <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
+                          <span>Loading leads...</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : leads.length === 0 ? (
+                    <tr>
+                      <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
+                        No leads found. Start a call to see them here.
+                      </td>
+                    </tr>
+                  ) : (
+                    leads.slice(0, 5).map((lead) => (
+                      <tr key={lead.id} className="group hover:bg-white/[0.02] transition-colors">
+                        <td className="px-6 py-4 font-medium">Lead #{lead.id.slice(0, 8)}</td>
+                        <td className="px-6 py-4 text-slate-400">{lead.phone_number}</td>
+                        <td className="px-6 py-4">
+                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                            lead.status === 'qualified' ? 'bg-emerald-400/10 text-emerald-400' :
+                            lead.status === 'calling' ? 'bg-blue-400/10 text-blue-400 animate-pulse' :
+                            lead.status === 'rejected' ? 'bg-rose-400/10 text-rose-400' :
+                            'bg-slate-400/10 text-slate-400'
+                          }`}>
+                            {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
+                          </span>
+                        </td>
+                        <td className="px-6 py-4 text-slate-400 text-sm">
+                          {new Date(lead.created_at).toLocaleTimeString()}
+                        </td>
+                        <td className="px-6 py-4 text-right">
+                          <button className="text-slate-400 hover:text-white transition-colors">
+                            View Details
+                          </button>
+                        </td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
+            </div>
+          </>
+        );
+      case 'Leads':
+        return (
+          <div className="glass-card p-6">
+            <h2 className="text-2xl font-bold mb-6">Lead Management</h2>
+            <p className="text-slate-400">Manage and qualify your leads here.</p>
+            {/* Full leads list could go here */}
+          </div>
+        );
+      case 'History':
+        return (
+          <div className="glass-card p-6">
+            <h2 className="text-2xl font-bold mb-6">Call History</h2>
+            <p className="text-slate-400">Review past conversations and AI analysis.</p>
+          </div>
+        );
+      case 'Settings':
+        return (
+          <div className="glass-card p-6">
+            <h2 className="text-2xl font-bold mb-6">Settings</h2>
+            <p className="text-slate-400">Configure your AI persona and Twilio integration.</p>
+          </div>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div className="min-h-screen bg-[#030712] text-slate-50 flex bg-mesh">
       {/* Sidebar */}
@@ -86,15 +230,16 @@ export default function Home() {
 
         <nav className="flex flex-col gap-2">
           {[
-            { icon: LayoutDashboard, label: 'Dashboard', active: true },
+            { icon: LayoutDashboard, label: 'Dashboard' },
             { icon: Users, label: 'Leads' },
-            { icon: History, label: 'Call History' },
+            { icon: History, label: 'History' },
             { icon: SettingsIcon, label: 'Settings' },
           ].map((item) => (
             <button
               key={item.label}
+              onClick={() => setCurrentTab(item.label)}
               className={`flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 ${
-                item.active 
+                currentTab === item.label 
                   ? 'bg-white/10 text-white glow-border' 
                   : 'text-slate-400 hover:text-white hover:bg-white/5'
               }`}
@@ -108,117 +253,7 @@ export default function Home() {
 
       {/* Main Content */}
       <main className="flex-1 p-8 overflow-auto">
-        <header className="flex justify-between items-center mb-10">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight mb-1">Campaign Overview</h1>
-            <p className="text-slate-400">Welcome back, here's what's happening today.</p>
-          </div>
-          <div className="flex gap-4">
-            <div className="relative group">
-              <input
-                type="text"
-                placeholder="Enter phone number..."
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-                className="bg-white/5 border border-white/10 rounded-xl px-4 py-2.5 w-64 focus:outline-none focus:ring-2 focus:ring-indigo-500/50 transition-all"
-              />
-            </div>
-            <button
-              onClick={handleStartCall}
-              disabled={isCalling}
-              className="bg-indigo-600 hover:bg-indigo-500 text-white px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2 transition-all glow-blue disabled:opacity-50"
-            >
-              <Play className="w-4 h-4" />
-              {isCalling ? 'Initiating...' : 'Start AI Call'}
-            </button>
-          </div>
-        </header>
-
-        {/* Stats Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10">
-          {stats.map((stat, i) => (
-            <motion.div
-              key={stat.label}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.1 }}
-              className="glass-card p-6 group hover:border-indigo-500/30 transition-all duration-300"
-            >
-              <div className="flex justify-between items-start mb-4">
-                <div className={`p-2 rounded-lg bg-white/5 ${stat.color}`}>
-                  <stat.icon className="w-6 h-6" />
-                </div>
-                <span className="text-xs font-medium text-emerald-400 bg-emerald-400/10 px-2 py-1 rounded-full">
-                  +12%
-                </span>
-              </div>
-              <h3 className="text-slate-400 text-sm font-medium mb-1">{stat.label}</h3>
-              <p className="text-3xl font-bold tracking-tight">{stat.value}</p>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Leads Table */}
-        <div className="glass-card overflow-hidden">
-          <div className="p-6 border-b border-white/5 flex justify-between items-center">
-            <h2 className="text-xl font-bold">Recent Leads</h2>
-            <button className="text-indigo-400 hover:text-indigo-300 text-sm font-medium">View all</button>
-          </div>
-          <table className="w-full text-left">
-            <thead>
-              <tr className="text-slate-400 text-sm font-medium border-b border-white/5">
-                <th className="px-6 py-4">Lead</th>
-                <th className="px-6 py-4">Phone Number</th>
-                <th className="px-6 py-4">Status</th>
-                <th className="px-6 py-4">Time</th>
-                <th className="px-6 py-4 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-white/5">
-              {isLoading ? (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
-                    <div className="flex flex-col items-center gap-2">
-                      <div className="w-8 h-8 border-2 border-indigo-500 border-t-transparent rounded-full animate-spin" />
-                      <span>Loading leads...</span>
-                    </div>
-                  </td>
-                </tr>
-              ) : leads.length === 0 ? (
-                <tr>
-                  <td colSpan={5} className="px-6 py-12 text-center text-slate-400">
-                    No leads found. Start a call to see them here.
-                  </td>
-                </tr>
-              ) : (
-                leads.map((lead) => (
-                  <tr key={lead.id} className="group hover:bg-white/[0.02] transition-colors">
-                    <td className="px-6 py-4 font-medium">Lead #{lead.id.slice(0, 8)}</td>
-                    <td className="px-6 py-4 text-slate-400">{lead.phone_number}</td>
-                    <td className="px-6 py-4">
-                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                        lead.status === 'qualified' ? 'bg-emerald-400/10 text-emerald-400' :
-                        lead.status === 'calling' ? 'bg-blue-400/10 text-blue-400 animate-pulse' :
-                        lead.status === 'rejected' ? 'bg-rose-400/10 text-rose-400' :
-                        'bg-slate-400/10 text-slate-400'
-                      }`}>
-                        {lead.status.charAt(0).toUpperCase() + lead.status.slice(1)}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-slate-400 text-sm">
-                      {new Date(lead.created_at).toLocaleTimeString()}
-                    </td>
-                    <td className="px-6 py-4 text-right">
-                      <button className="text-slate-400 hover:text-white transition-colors">
-                        View Details
-                      </button>
-                    </td>
-                  </tr>
-                ))
-              )}
-            </tbody>
-          </table>
-        </div>
+        {renderContent()}
       </main>
     </div>
   );
