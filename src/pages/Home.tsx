@@ -13,7 +13,8 @@ import {
   X,
   FileText,
   Clock,
-  ExternalLink
+  ExternalLink,
+  PhoneOff
 } from 'lucide-react';
 
 interface Lead {
@@ -32,6 +33,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
   const [currentTab, setCurrentTab] = useState('Dashboard');
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
+  const [isEndingCall, setIsEndingCall] = useState<string | null>(null);
 
   const fetchLeads = async () => {
     try {
@@ -74,6 +76,24 @@ export default function Home() {
     } finally {
       setIsCalling(false);
       setPhoneNumber('');
+    }
+  };
+
+  const handleEndCall = async (leadId: string) => {
+    setIsEndingCall(leadId);
+    try {
+      const response = await fetch('/api/calls/end', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ leadId }),
+      });
+      if (response.ok) {
+        fetchLeads();
+      }
+    } catch (error) {
+      console.error('Error ending call:', error);
+    } finally {
+      setIsEndingCall(null);
     }
   };
 
@@ -189,13 +209,30 @@ export default function Home() {
                           {new Date(lead.created_at).toLocaleTimeString()}
                         </td>
                         <td className="px-6 py-4 text-right">
-                          <button 
-                            onClick={() => setSelectedLead(lead)}
-                            className="text-slate-400 hover:text-white transition-colors flex items-center gap-1 ml-auto"
-                          >
-                            <ExternalLink className="w-3.5 h-3.5" />
-                            View Details
-                          </button>
+                          <div className="flex items-center justify-end gap-3">
+                            {lead.status === 'calling' && (
+                              <button 
+                                onClick={() => handleEndCall(lead.id)}
+                                disabled={isEndingCall === lead.id}
+                                className="text-rose-400 hover:text-rose-300 transition-colors flex items-center gap-1 text-sm font-medium disabled:opacity-50"
+                                title="End Call"
+                              >
+                                {isEndingCall === lead.id ? (
+                                  <div className="w-3.5 h-3.5 border-2 border-rose-400 border-t-transparent rounded-full animate-spin" />
+                                ) : (
+                                  <PhoneOff className="w-3.5 h-3.5" />
+                                )}
+                                End Call
+                              </button>
+                            )}
+                            <button 
+                              onClick={() => setSelectedLead(lead)}
+                              className="text-slate-400 hover:text-white transition-colors flex items-center gap-1"
+                            >
+                              <ExternalLink className="w-3.5 h-3.5" />
+                              View Details
+                            </button>
+                          </div>
                         </td>
                       </tr>
                     ))

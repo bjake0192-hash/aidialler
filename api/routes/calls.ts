@@ -112,6 +112,44 @@ router.post('/status', express.urlencoded({ extended: true }), async (req: Reque
   res.sendStatus(200);
 });
 
+// Route to end an active call
+router.post('/end', async (req: Request, res: Response) => {
+  const { leadId } = req.body;
+
+  if (!leadId) {
+    return res.status(400).json({ success: false, error: 'Lead ID is required' });
+  }
+
+  try {
+    const { data: callLog, error: logError } = await supabase
+      .from('call_logs')
+      .select('twilio_sid')
+      .eq('lead_id', leadId)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .single();
+
+    if (logError || !callLog) {
+      throw new Error('Call log not found');
+    }
+
+    // Update Twilio call status to completed
+    await client.calls(callLog.twilio_sid).update({ status: 'completed' });
+
+    // Fallback DB update just in case status callback fails
+    await supabase
+      .from('leads')
+      .update({ status: 'completed' })
+      .eq('id', leadId)
+      .eq('status', 'calling');
+
+    res.status(200).json({ success: true, message: 'Call ended successfully' });
+  } catch (error: any) {
+    console.error('End Call Error:', error);
+    res.status(500).json({ success: false, error: error.message });
+  }
+});
+
 // Route to get leads with their most recent call log
 router.get('/leads', async (req: Request, res: Response) => {
   try {
