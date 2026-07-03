@@ -44,6 +44,8 @@ router.post('/start', async (req: Request, res: Response) => {
       from: PHONE_NUMBER_FROM || '',
       to: phoneNumber,
       twiml: outboundTwiML,
+      statusCallback: `https://${cleanDomain}/api/calls/status`,
+      statusCallbackEvent: ['completed', 'failed', 'busy', 'no-answer', 'canceled'],
     });
 
     // 3. Create call log
@@ -70,6 +72,44 @@ router.post('/start', async (req: Request, res: Response) => {
       error: error.message || 'Failed to initiate call',
     });
   }
+});
+
+// Route to handle Twilio status callbacks
+router.post('/status', express.urlencoded({ extended: true }), async (req: Request, res: Response) => {
+  const { CallSid, CallStatus } = req.body;
+  console.log(`Twilio Status Callback: Call ${CallSid} is ${CallStatus}`);
+  
+  try {
+    const { data: log } = await supabase
+      .from('call_logs')
+      .select('lead_id')
+      .eq('twilio_sid', CallSid)
+      .single();
+
+    if (log && log.lead_id) {
+      const statusMap: Record<string, string> = {
+        'completed': 'completed',
+        'failed': 'failed',
+        'busy': 'failed',
+        'no-answer': 'failed',
+        'canceled': 'failed'
+      };
+      
+      const newStatus = statusMap[CallStatus];
+      if (newStatus) {
+        // Only update if it's stuck on 'calling' so we don't overwrite 'qualified' or 'rejected'
+        await supabase
+          .from('leads')
+          .update({ status: newStatus })
+          .eq('id', log.lead_id)
+          .eq('status', 'calling');
+      }
+    }
+  } catch (err) {
+    console.error('Error in status callback:', err);
+  }
+  
+  res.sendStatus(200);
 });
 
 // Route to get leads with their most recent call log
