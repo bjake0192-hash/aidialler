@@ -67,6 +67,7 @@ function resample16to8(pcm16k: Buffer): Buffer {
 
 const { ELEVENLABS_AGENT_ID, ELEVENLABS_API_KEY, DOMAIN } = process.env;
 const API_KEY = ELEVENLABS_API_KEY?.trim();
+const AGENT_ID = ELEVENLABS_AGENT_ID?.trim();
 
 // #region debug-point ai-dialler-silence-bug-reporter
 const reportDebug = (event: string, data: any = {}, hypothesisId?: string) => {
@@ -207,8 +208,9 @@ export function setupMediaStream(server: Server) {
 
     const setupElevenLabs = async () => {
       try {
+        console.log(`Fetching signed URL for agent: ${AGENT_ID}`);
         const response = await fetch(
-          `https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${ELEVENLABS_AGENT_ID}`,
+          `https://api.elevenlabs.io/v1/convai/conversation/get_signed_url?agent_id=${AGENT_ID}`,
           { headers: { 'xi-api-key': API_KEY || '' } }
         );
         

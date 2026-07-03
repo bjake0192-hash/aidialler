@@ -173,4 +173,14 @@ router.get('/leads', async (req: Request, res: Response) => {
   }
 });
 
+// Route to get server logs for debugging
+router.get('/logs', (req: Request, res: Response) => {
+  // We need to import appLogs from server.js dynamically to avoid circular dependencies if any
+  import('../server.js').then(serverModule => {
+    res.status(200).json({ success: true, logs: serverModule.appLogs });
+  }).catch(err => {
+    res.status(500).json({ success: false, error: 'Could not load logs' });
+  });
+});
+
 export default router;

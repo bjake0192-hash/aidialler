@@ -4,6 +4,39 @@
 import app from './app.js';
 import { setupMediaStream } from './media-stream.js';
 
+// --- IN-MEMORY LOGGING FOR DEBUGGING ON RENDER ---
+const MAX_LOGS = 200;
+export const appLogs: string[] = [];
+
+const originalConsoleLog = console.log;
+const originalConsoleError = console.error;
+const originalConsoleWarn = console.warn;
+
+function addLog(level: string, ...args: any[]) {
+  const msg = `[${new Date().toISOString()}] [${level}] ` + args.map(a => 
+    typeof a === 'object' ? JSON.stringify(a) : String(a)
+  ).join(' ');
+  
+  appLogs.push(msg);
+  if (appLogs.length > MAX_LOGS) appLogs.shift();
+}
+
+console.log = function(...args) {
+  addLog('INFO', ...args);
+  originalConsoleLog.apply(console, args);
+};
+
+console.error = function(...args) {
+  addLog('ERROR', ...args);
+  originalConsoleError.apply(console, args);
+};
+
+console.warn = function(...args) {
+  addLog('WARN', ...args);
+  originalConsoleWarn.apply(console, args);
+};
+// -------------------------------------------------
+
 /**
  * start server with port
  */
