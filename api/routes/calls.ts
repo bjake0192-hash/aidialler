@@ -27,11 +27,14 @@ router.post('/start', async (req: Request, res: Response) => {
 
     if (leadError) throw leadError;
 
+    // Strip http:// or https:// from DOMAIN just in case it was added by mistake
+    const cleanDomain = DOMAIN?.replace(/^https?:\/\//, '').replace(/\/$/, '');
+
     // 2. Initiate Twilio call
     const outboundTwiML = `<?xml version="1.0" encoding="UTF-8"?>
       <Response>
         <Connect>
-          <Stream url="wss://${DOMAIN}/media-stream" />
+          <Stream url="wss://${cleanDomain}/media-stream" />
         </Connect>
       </Response>`;
 
